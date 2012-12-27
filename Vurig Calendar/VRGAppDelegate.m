@@ -9,6 +9,7 @@
 #import "VRGAppDelegate.h"
 
 #import "VRGViewController.h"
+#import "ARCSupporDefine.h"
 
 @implementation VRGAppDelegate
 
@@ -19,7 +20,7 @@
 {
     [_window release];
     [_viewController release];
-    [super dealloc];
+    [super don_dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

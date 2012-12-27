@@ -7,6 +7,7 @@
 //
 
 #import "NSMutableArray+convenience.h"
+#import "ARCSupporDefine.h"
 
 
 
@@ -16,7 +17,7 @@
 {
     if (to != from) {
         id obj = [self objectAtIndex:from];
-        [obj retain];
+        [obj don_retain];
         [self removeObjectAtIndex:from];
         if (to >= [self count]) {
             [self addObject:obj];
