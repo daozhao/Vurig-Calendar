@@ -553,7 +553,8 @@
         labelCurrentMonth.textColor = [UIColor colorWithHexString:@"0x383838"];
         labelCurrentMonth.textAlignment = UITextAlignmentCenter;
         
-        [self performSelector:@selector(reset) withObject:nil afterDelay:0.1]; //so delegate can be set after init and still get called on init
+//        [self performSelector:@selector(reset) withObject:nil afterDelay:0.1]; //so delegate can be set after init and still get called on init
+        [self performSelectorOnMainThread:@selector(reset) withObject:nil waitUntilDone:NO];
         //        [self reset];
     }
     return self;
