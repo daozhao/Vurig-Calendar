@@ -322,7 +322,7 @@
     dateFormatter.dateFormat=@"EEE";
     //always assume gregorian with monday first
     NSMutableArray *weekdays = [[NSMutableArray alloc] initWithArray:[dateFormatter shortWeekdaySymbols]];
-    [weekdays moveObjectFromIndex:0 toIndex:6];
+//    [weekdays moveObjectFromIndex:0 toIndex:6];
     
     CGContextSetFillColorWithColor(context, 
                                    [UIColor colorWithHexString:@"0x383838"].CGColor);
