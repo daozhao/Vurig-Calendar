@@ -16,6 +16,17 @@
 #define kVRGCalendarViewDayWidth 44
 #define kVRGCalendarViewDayHeight 44
 
+#define kVRGCalendarTextColor @"0x383838"
+#define kVRGCalendarArrowColor @"0x000000"
+#define kVRGCalendarBackgroundColor @"0xFFFFFF"
+#define kVRGCalendarPrevOrNextTextColor @"0x767676"
+#define kVRGCalendarSelectedTextBackgroundColor @"0x006dbc"
+#define kVRGCalendarSelectedTextColor @"0xFFFFFF"
+#define kVRGCalendarDisableTextColor @"0xDCDCDC"
+#define kVRGCalendarGridBackgroundColor @"0xf3f3f3"
+#define kVRGCalendarGridDarkLinesColor @"0xcfd4d8"
+
+
 @protocol VRGCalendarViewDelegate;
 @interface VRGCalendarView : UIView {
     id <VRGCalendarViewDelegate> delegate;
