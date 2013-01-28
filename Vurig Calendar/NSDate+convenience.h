@@ -12,6 +12,8 @@
 -(NSDate *)offsetMonth:(int)numMonths;
 -(NSDate *)offsetDay:(int)numDays;
 -(NSDate *)offsetHours:(int)hours;
+-(NSDate *)firstDayInMonth;
+-(NSDate *)lastDayInMonth;
 -(int)numDaysInMonth;
 -(int)firstWeekDayInMonth;
 -(int)year;

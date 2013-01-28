@@ -23,6 +23,8 @@
     
     VRGCalendarView *calendar = [[VRGCalendarView alloc] init];
     calendar.delegate=self;
+    calendar.beginDate = [NSDate dateWithTimeIntervalSinceNow: -(60*60)*24*8];
+    calendar.endDate = [NSDate dateWithTimeIntervalSinceNow:(60*60)*24*40];
     [self.view addSubview:calendar];
     
     

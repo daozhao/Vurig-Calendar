@@ -15,6 +15,7 @@
 
 @implementation VRGCalendarView
 @synthesize currentMonth,delegate,labelCurrentMonth, animationView_A,animationView_B;
+@synthesize beginDate,endDate;
 @synthesize markedDates,markedColors,calendarHeight,selectedDate;
 
 #pragma mark - Select Date
@@ -22,6 +23,13 @@
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [gregorian components:NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit fromDate:self.currentMonth];
     [comps setDay:date];
+    NSDate *selectDateTemp = [gregorian dateFromComponents:comps];
+    if ( beginDate && [beginDate compare:selectDateTemp] == NSOrderedDescending  ) {
+        return;
+    }
+    if ( endDate && [endDate compare:selectDateTemp] == NSOrderedAscending ) {
+        return;
+    }
     self.selectedDate = [gregorian dateFromComponents:comps];
     
     int selectedDateYear = [selectedDate year];
@@ -256,9 +264,13 @@
     
     //Touch either arrows or month in middle
     if (CGRectContainsPoint(rectArrowLeft, touchPoint)) {
-        [self showPreviousMonth];
+        if ( (beginDate && [beginDate compare:self.currentMonth.firstDayInMonth] == NSOrderedAscending) || (!beginDate) ){
+            [self showPreviousMonth];
+        }
     } else if (CGRectContainsPoint(rectArrowRight, touchPoint)) {
-        [self showNextMonth];
+        if ( (endDate && [endDate compare:self.currentMonth.lastDayInMonth] == NSOrderedDescending) || (!endDate) ){
+            [self showNextMonth];
+        }
     } else if (CGRectContainsPoint(self.labelCurrentMonth.frame, touchPoint)) {
         //Detect touch in current month
         int currentMonthIndex = [self.currentMonth month];
@@ -296,26 +308,30 @@
     int ymargin = 18;
     
     //Arrow Left
-    CGContextBeginPath(context);
-    CGContextMoveToPoint(context, xmargin+arrowSize/1.5, ymargin);
-    CGContextAddLineToPoint(context,xmargin+arrowSize/1.5,ymargin+arrowSize);
-    CGContextAddLineToPoint(context,xmargin,ymargin+arrowSize/2);
-    CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
-    
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
-    CGContextFillPath(context);
+    if ( (beginDate && [beginDate compare:self.currentMonth.firstDayInMonth] == NSOrderedAscending) || (!beginDate) ){
+        CGContextBeginPath(context);
+        CGContextMoveToPoint(context, xmargin+arrowSize/1.5, ymargin);
+        CGContextAddLineToPoint(context,xmargin+arrowSize/1.5,ymargin+arrowSize);
+        CGContextAddLineToPoint(context,xmargin,ymargin+arrowSize/2);
+        CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
+        
+        CGContextSetFillColorWithColor(context, 
+                                       [UIColor blackColor].CGColor);
+        CGContextFillPath(context);
+    }
     
     //Arrow right
-    CGContextBeginPath(context);
-    CGContextMoveToPoint(context, self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
-    CGContextAddLineToPoint(context,self.frame.size.width-xmargin,ymargin+arrowSize/2);
-    CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5),ymargin+arrowSize);
-    CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
-    
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
-    CGContextFillPath(context);
+    if ( (endDate && [endDate compare:self.currentMonth.lastDayInMonth] == NSOrderedDescending) || (!endDate)){
+        CGContextBeginPath(context);
+        CGContextMoveToPoint(context, self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
+        CGContextAddLineToPoint(context,self.frame.size.width-xmargin,ymargin+arrowSize/2);
+        CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5),ymargin+arrowSize);
+        CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
+        
+        CGContextSetFillColorWithColor(context, 
+                                       [UIColor blackColor].CGColor);
+        CGContextFillPath(context);
+    }
     
     //Weekdays
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -392,8 +408,13 @@
     
     int numBlocks = numRows*7;
     NSDate *previousMonth = [self.currentMonth offsetMonth:-1];
+    NSDate *nextMonth = [self.currentMonth offsetMonth:1];
     int currentMonthNumDays = [currentMonth numDaysInMonth];
     int prevMonthNumDays = [previousMonth numDaysInMonth];
+    
+    NSLog(@"currentMonth:%@ previousMonth:%@",self.currentMonth,previousMonth);
+    NSLog(@"weekbegin:%@ weekend:%@",[NSDate dateStartOfWeek],[NSDate dateEndOfWeek]);
+    NSLog(@"month begin:%@ month end:%@",self.currentMonth.firstDayInMonth,self.currentMonth.lastDayInMonth);
     
     int selectedDateBlock = ([selectedDate day]-1)+firstWeekDay;
     
@@ -427,6 +448,21 @@
     if ([todayDate month] == [currentMonth month] && [todayDate year] == [currentMonth year]) {
         todayBlock = [todayDate day] + firstWeekDay - 1;
     }
+    int beginBlock = -1;
+    int endBlock   = numBlocks ;
+    
+    if ( beginDate && [beginDate month] == [previousMonth month] && [beginDate year] == [previousMonth year]) {
+        beginBlock = firstWeekDay -(prevMonthNumDays - beginDate.day ) - 1 ; //(prevMonthNumDays-firstWeekDay)+1;
+    }
+    if ( beginDate && [beginDate month] == [currentMonth month] && [beginDate year] == [currentMonth year]) {
+        beginBlock = [beginDate day] + firstWeekDay - 1;
+    }
+    if ( endDate && [endDate month] == [currentMonth month] && [endDate year] == [currentMonth year]) {
+        endBlock = [endDate day] + firstWeekDay - 1;
+    }
+    if ( endDate && [endDate month] == [nextMonth month] && [endDate year] == [nextMonth year]) {
+        endBlock = currentMonth.numDaysInMonth + firstWeekDay + endDate.day -1;
+    }
     
     for (int i=0; i<numBlocks; i++) {
         int targetDate = i;
@@ -455,6 +491,15 @@
                                            [UIColor colorWithHexString:hex].CGColor);
         }
         
+        if ( i < beginBlock+1 ){
+             NSString *hex = @"0xDCDCDC" ;
+            CGContextSetFillColorWithColor(context,[UIColor colorWithHexString:hex].CGColor);
+        }
+        if ( i > endBlock ){
+             NSString *hex =  @"0xDCDCDC";
+            CGContextSetFillColorWithColor(context,[UIColor colorWithHexString:hex].CGColor);
+        }
+        
         NSString *date = [NSString stringWithFormat:@"%i",targetDate];
         
         //draw selected date
@@ -474,6 +519,20 @@
             
             CGContextSetFillColorWithColor(context, 
                                            [UIColor whiteColor].CGColor);
+        } else if ( beginBlock == i) {
+//            CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
+//            CGContextAddRect(context, rectangleGrid);
+//            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0x383838"].CGColor);
+//            CGContextFillPath(context);
+//            
+//            CGContextSetFillColorWithColor(context,[UIColor whiteColor].CGColor);
+         } else if ( endBlock == i) {
+//            CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
+//            CGContextAddRect(context, rectangleGrid);
+//            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0x383838"].CGColor);
+//            CGContextFillPath(context);
+//            
+//            CGContextSetFillColorWithColor(context,[UIColor whiteColor].CGColor);
         }
         
         [date drawInRect:CGRectMake(targetX+2, targetY+10, kVRGCalendarViewDayWidth, kVRGCalendarViewDayHeight) withFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];

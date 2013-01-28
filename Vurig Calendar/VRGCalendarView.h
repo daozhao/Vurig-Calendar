@@ -21,6 +21,8 @@
     id <VRGCalendarViewDelegate> delegate;
     
     NSDate *currentMonth;
+    NSDate *beginDate;
+    NSDate *endDate;
     
     UILabel *labelCurrentMonth;
     
@@ -37,6 +39,8 @@
 
 @property (nonatomic, retain) id <VRGCalendarViewDelegate> delegate;
 @property (nonatomic, retain) NSDate *currentMonth;
+@property (nonatomic, retain) NSDate *beginDate;
+@property (nonatomic, retain) NSDate *endDate;
 @property (nonatomic, retain) UILabel *labelCurrentMonth;
 @property (nonatomic, retain) UIImageView *animationView_A;
 @property (nonatomic, retain) UIImageView *animationView_B;
