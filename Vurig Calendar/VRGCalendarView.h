@@ -29,7 +29,7 @@
 
 @protocol VRGCalendarViewDelegate;
 @interface VRGCalendarView : UIView {
-    id <VRGCalendarViewDelegate> delegate;
+//    id <VRGCalendarViewDelegate> delegate;
     
     NSDate *currentMonth;
     NSDate *beginDate;
@@ -48,7 +48,7 @@
     NSArray *markedColors;
 }
 
-@property (nonatomic, retain) id <VRGCalendarViewDelegate> delegate;
+@property (nonatomic, assign) id <VRGCalendarViewDelegate> delegate;
 @property (nonatomic, retain) NSDate *currentMonth;
 @property (nonatomic, retain) NSDate *beginDate;
 @property (nonatomic, retain) NSDate *endDate;
