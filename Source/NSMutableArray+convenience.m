@@ -16,7 +16,7 @@
 - (void)moveObjectFromIndex:(NSUInteger)from toIndex:(NSUInteger)to
 {
     if (to != from) {
-        id obj = [self objectAtIndex:from];
+        id obj = self[from];
         [obj don_retain];
         [self removeObjectAtIndex:from];
         if (to >= [self count]) {

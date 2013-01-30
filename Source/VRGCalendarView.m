@@ -133,7 +133,7 @@
     }
     
     //Animation
-    __block VRGCalendarView *blockSafeSelf = self;
+    __weak VRGCalendarView *blockSafeSelf = self;
     [UIView animateWithDuration:.35
                      animations:^{
                          [self updateSize];
@@ -191,7 +191,7 @@
         animationView_B.frameY = animationView_A.frameY - animationView_B.frameHeight + 3;
     }
     
-    __block VRGCalendarView *blockSafeSelf = self;
+    __weak VRGCalendarView *blockSafeSelf = self;
     [UIView animateWithDuration:.35
                      animations:^{
                          [self updateSize];
@@ -339,7 +339,7 @@
     
     CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarDayLabelColor].CGColor);
     for (int i =0; i<[weekdays count]; i++) {
-        NSString *weekdayValue = (NSString *)[weekdays objectAtIndex:i];
+        NSString *weekdayValue = (NSString *)weekdays[i];
         [weekdayValue drawInRect:CGRectMake(i*(kVRGCalendarViewDayWidth+2), kVRGCalendarViewTitleHeight, kVRGCalendarViewDayWidth+2, kVRGCalendarViewTopBarHeight-kVRGCalendarViewTitleHeight)
                         withFont:kKNCalendarDayLabelFont
                    lineBreakMode:UILineBreakModeClip
@@ -520,7 +520,7 @@
     if (!self.markedDates || isSelectedDatePreviousMonth || isSelectedDateNextMonth) return;
     
     for (int i = 0; i<[self.markedDates count]; i++) {
-        id markedDateObj = [self.markedDates objectAtIndex:i];
+        id markedDateObj = (self.markedDates)[i];
         
         int targetDate;
         if ([markedDateObj isKindOfClass:[NSNumber class]]) {
@@ -548,7 +548,7 @@
         }  else if (todayBlock==targetBlock) {
             color = [UIColor colorWithHexString:kVRGCalendarSelectedTextColor];
         } else {
-            color  = (UIColor *)[markedColors objectAtIndex:i];
+            color  = (UIColor *)markedColors[i];
         }
         
         
@@ -595,11 +595,7 @@
 -(void)dealloc {
     
     self.delegate=nil;
-    self.currentMonth=nil;
-    self.labelCurrentMonth=nil;
     
-    self.markedDates=nil;
-    self.markedColors=nil;
     
     [super don_dealloc];
 }
