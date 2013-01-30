@@ -137,7 +137,6 @@
     [UIView animateWithDuration:.35
                      animations:^{
                          [self updateSize];
-                         //blockSafeSelf.frameHeight = 100;
                          if (hasNextMonthDays) {
                              animationView_A.frameY = -animationView_A.frameHeight + kVRGCalendarViewDayHeight+3;
                          } else {
@@ -259,8 +258,8 @@
     self.markedDates=nil;
     self.markedColors=nil;  
     
-    CGRect rectArrowLeft = CGRectMake(0, 0, 50, 40);
-    CGRect rectArrowRight = CGRectMake(self.frame.size.width-50, 0, 50, 40);
+    CGRect rectArrowLeft = CGRectMake(0, 0, 50, kVRGCalendarViewTitleHeight);
+    CGRect rectArrowRight = CGRectMake(self.frame.size.width-50, 0, 50, kVRGCalendarViewTitleHeight);
     
     //Touch either arrows or month in middle
     if (CGRectContainsPoint(rectArrowLeft, touchPoint)) {
@@ -281,6 +280,7 @@
 }
 
 #pragma mark - Drawing
+
 - (void)drawRect:(CGRect)rect
 {
     int firstWeekDay = [self.currentMonth firstWeekDayInMonth]-1; //-1 because weekdays begin at 1, not 0
@@ -300,13 +300,12 @@
     CGRect rectangle = CGRectMake(0,0,self.frame.size.width,kVRGCalendarViewTopBarHeight);
     CGContextAddRect(context, rectangle);
     CGContextSetFillColorWithColor(context,[UIColor colorWithHexString:kVRGCalendarBackgroundColor].CGColor);
-//    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextFillPath(context);
     
     //Arrows
-    int arrowSize = 12;
-    int xmargin = 20;
-    int ymargin = 18;
+    int arrowSize = kKNCalendarArrowHeight;
+    int xmargin = kKNCalendarArrowOffsetSide;
+    int ymargin = kKNCalendarArrowOffsetTop;
     
     //Arrow Left
     if ( (beginDate && [beginDate compare:self.currentMonth.firstDayInMonth] == NSOrderedAscending) || (!beginDate) ){
@@ -316,8 +315,7 @@
         CGContextAddLineToPoint(context,xmargin,ymargin+arrowSize/2);
         CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
         
-        CGContextSetFillColorWithColor(context, 
-                                       [UIColor colorWithHexString:kVRGCalendarArrowColor].CGColor);
+        CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarArrowColor].CGColor);
         CGContextFillPath(context);
     }
     
@@ -329,8 +327,7 @@
         CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5),ymargin+arrowSize);
         CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
         
-        CGContextSetFillColorWithColor(context, 
-                                       [UIColor colorWithHexString:kVRGCalendarArrowColor].CGColor);
+        CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarArrowColor].CGColor);
         CGContextFillPath(context);
     }
     
@@ -339,14 +336,14 @@
     dateFormatter.dateFormat=@"EEE";
     //always assume gregorian with monday first
     NSMutableArray *weekdays = [[NSMutableArray alloc] initWithArray:[dateFormatter shortWeekdaySymbols]];
-//    [weekdays moveObjectFromIndex:0 toIndex:6];
     
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor colorWithHexString:kVRGCalendarTextColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarDayLabelColor].CGColor);
     for (int i =0; i<[weekdays count]; i++) {
         NSString *weekdayValue = (NSString *)[weekdays objectAtIndex:i];
-        UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:12];
-        [weekdayValue drawInRect:CGRectMake(i*(kVRGCalendarViewDayWidth+2), 40, kVRGCalendarViewDayWidth+2, 20) withFont:font lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [weekdayValue drawInRect:CGRectMake(i*(kVRGCalendarViewDayWidth+2), kVRGCalendarViewTitleHeight, kVRGCalendarViewDayWidth+2, kVRGCalendarViewTopBarHeight-kVRGCalendarViewTitleHeight)
+                        withFont:kKNCalendarDayLabelFont
+                   lineBreakMode:UILineBreakModeClip
+                       alignment:UITextAlignmentCenter];
     }
     
     int numRows = [self numRows];
@@ -358,12 +355,10 @@
     CGRect rectangleGrid = CGRectMake(0,kVRGCalendarViewTopBarHeight,self.frame.size.width,gridHeight);
     CGContextAddRect(context, rectangleGrid);
     CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarGridBackgroundColor].CGColor);
-    //CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0xff0000"].CGColor);
     CGContextFillPath(context);
     
     //Grid white lines
     CGContextSetStrokeColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarBackgroundColor].CGColor);
-//    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextBeginPath(context);
     CGContextMoveToPoint(context, 0, kVRGCalendarViewTopBarHeight+1);
     CGContextAddLineToPoint(context, kVRGCalendarViewWidth, kVRGCalendarViewTopBarHeight+1);
@@ -404,10 +399,7 @@
     //Draw days
     CGContextSetFillColorWithColor(context, 
                                    [UIColor colorWithHexString:kVRGCalendarTextColor].CGColor);
-    
-    
-    //NSLog(@"currentMonth month = %i, first weekday in month = %i",[self.currentMonth month],[self.currentMonth firstWeekDayInMonth]);
-    
+
     int numBlocks = numRows*7;
     NSDate *previousMonth = [self.currentMonth offsetMonth:-1];
     NSDate *nextMonth = [self.currentMonth offsetMonth:1];
@@ -445,8 +437,7 @@
     NSDate *todayDate = [NSDate date];
     int todayBlock = -1;
     
-//    NSLog(@"currentMonth month = %i day = %i, todaydate day = %i",[currentMonth month],[currentMonth day],[todayDate month]);
-    
+   
     if ([todayDate month] == [currentMonth month] && [todayDate year] == [currentMonth year]) {
         todayBlock = [todayDate day] + firstWeekDay - 1;
     }
@@ -510,24 +501,20 @@
             CGContextAddRect(context, rectangleGrid);
             CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarSelectedTextBackgroundColor].CGColor);
             CGContextFillPath(context);
-            
             CGContextSetFillColorWithColor(context,[UIColor colorWithHexString:kVRGCalendarSelectedTextColor].CGColor);
-//                                           [UIColor whiteColor].CGColor);
         } else if (todayBlock==i) {
             CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
             CGContextAddRect(context, rectangleGrid);
-            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarTextColor].CGColor);
+            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarTodayBackgroundColor].CGColor);
             CGContextFillPath(context);
-            
-            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarSelectedTextColor].CGColor);
-//                                           [UIColor whiteColor].CGColor);
+            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:kVRGCalendarTodayTextColor].CGColor);
         }
         
-        [date drawInRect:CGRectMake(targetX+2, targetY+10, kVRGCalendarViewDayWidth, kVRGCalendarViewDayHeight) withFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:17] lineBreakMode:UILineBreakModeClip alignment:UITextAlignmentCenter];
+        [date drawInRect:CGRectMake(targetX+2, targetY+10, kVRGCalendarViewDayWidth, kVRGCalendarViewDayHeight)
+                withFont:kKNCalendarNumberFont
+           lineBreakMode:UILineBreakModeClip
+               alignment:UITextAlignmentCenter];
     }
-    
-    //    CGContextClosePath(context);
-    
     
     //Draw markings
     if (!self.markedDates || isSelectedDatePreviousMonth || isSelectedDateNextMonth) return;
@@ -545,8 +532,6 @@
             continue;
         }
         
-        
-        
         int targetBlock = firstWeekDay + (targetDate-1);
         int targetColumn = targetBlock%7;
         int targetRow = targetBlock/7;
@@ -561,7 +546,7 @@
         if (selectedDate && selectedDateBlock==targetBlock) {
             color = [UIColor colorWithHexString:kVRGCalendarSelectedTextColor];
         }  else if (todayBlock==targetBlock) {
-            color = [UIColor colorWithHexString:kVRGCalendarSelectedTextColor];//[UIColor whiteColor];
+            color = [UIColor colorWithHexString:kVRGCalendarSelectedTextColor];
         } else {
             color  = (UIColor *)[markedColors objectAtIndex:i];
         }
@@ -573,6 +558,7 @@
 }
 
 #pragma mark - Draw image for animation
+
 -(UIImage *)drawCurrentState {
     float targetHeight = kVRGCalendarViewTopBarHeight + [self numRows]*(kVRGCalendarViewDayHeight+2)+1;
     
@@ -586,6 +572,7 @@
 }
 
 #pragma mark - Init
+
 -(id)init {
     self = [super initWithFrame:CGRectMake(0, 0, kVRGCalendarViewWidth, 0)];
     if (self) {
@@ -593,16 +580,14 @@
         self.clipsToBounds=YES;
         
         isAnimating=NO;
-        self.labelCurrentMonth = [[UILabel alloc] initWithFrame:CGRectMake(34, 0, kVRGCalendarViewWidth-68, 40)];
+        self.labelCurrentMonth = [[UILabel alloc] initWithFrame:CGRectMake(34, 0, kVRGCalendarViewWidth, kVRGCalendarViewTitleHeight)];
         [self addSubview:labelCurrentMonth];
-        labelCurrentMonth.backgroundColor= [UIColor colorWithHexString:kVRGCalendarBackgroundColor]; //[UIColor whiteColor];
-        labelCurrentMonth.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:17];
-        labelCurrentMonth.textColor = [UIColor colorWithHexString:kVRGCalendarTextColor];
+        labelCurrentMonth.backgroundColor= [UIColor colorWithHexString:kVRGCalendarBackgroundColor];
+        labelCurrentMonth.font = kKNCalendarTitleFont;
+        labelCurrentMonth.textColor = [UIColor colorWithHexString:kVRGCalendarTitleLabelColor];
         labelCurrentMonth.textAlignment = UITextAlignmentCenter;
-        
-//        [self performSelector:@selector(reset) withObject:nil afterDelay:0.1]; //so delegate can be set after init and still get called on init
+
         [self performSelectorOnMainThread:@selector(reset) withObject:nil waitUntilDone:NO];
-        //        [self reset];
     }
     return self;
 }
