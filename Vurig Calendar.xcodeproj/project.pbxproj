@@ -19,7 +19,6 @@
 		93664AF1157522C0004EBE25 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 93664AF0157522C0004EBE25 /* main.m */; };
 		93664AF5157522C0004EBE25 /* VRGAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 93664AF4157522C0004EBE25 /* VRGAppDelegate.m */; };
 		93664AF8157522C0004EBE25 /* VRGViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93664AF7157522C0004EBE25 /* VRGViewController.m */; };
-		93664AFB157522C0004EBE25 /* VRGViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93664AF9157522C0004EBE25 /* VRGViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,7 +45,6 @@
 		93664AF4157522C0004EBE25 /* VRGAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VRGAppDelegate.m; sourceTree = "<group>"; };
 		93664AF6157522C0004EBE25 /* VRGViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VRGViewController.h; sourceTree = "<group>"; };
 		93664AF7157522C0004EBE25 /* VRGViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VRGViewController.m; sourceTree = "<group>"; };
-		93664AFA157522C0004EBE25 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/VRGViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				3792598A16B9A74E0030F13F /* Source */,
-				93664AEA157522C0004EBE25 /* Vurig Calendar */,
+				93664AEA157522C0004EBE25 /* Demo Project */,
 				93664AE3157522BF004EBE25 /* Frameworks */,
 				93664AE1157522BF004EBE25 /* Products */,
 			);
@@ -109,16 +107,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		93664AEA157522C0004EBE25 /* Vurig Calendar */ = {
+		93664AEA157522C0004EBE25 /* Demo Project */ = {
 			isa = PBXGroup;
 			children = (
 				93664AF3157522C0004EBE25 /* VRGAppDelegate.h */,
 				93664AF4157522C0004EBE25 /* VRGAppDelegate.m */,
 				93664AF6157522C0004EBE25 /* VRGViewController.h */,
 				93664AF7157522C0004EBE25 /* VRGViewController.m */,
-				93664AF9157522C0004EBE25 /* VRGViewController.xib */,
 				93664AEB157522C0004EBE25 /* Supporting Files */,
 			);
+			name = "Demo Project";
 			path = "Vurig Calendar";
 			sourceTree = "<group>";
 		};
@@ -126,8 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				93664AF0157522C0004EBE25 /* main.m */,
-				93664AEC157522C0004EBE25 /* Vurig Calendar-Info.plist */,
 				3792599D16B9A7910030F13F /* Default-568h@2x.png */,
+				93664AEC157522C0004EBE25 /* Vurig Calendar-Info.plist */,
 				93664AF2157522C0004EBE25 /* Vurig Calendar-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -185,7 +183,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				93664AFB157522C0004EBE25 /* VRGViewController.xib in Resources */,
 				3792599E16B9A7910030F13F /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,17 +206,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		93664AF9157522C0004EBE25 /* VRGViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				93664AFA157522C0004EBE25 /* en */,
-			);
-			name = VRGViewController.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		93664AFC157522C0004EBE25 /* Debug */ = {
