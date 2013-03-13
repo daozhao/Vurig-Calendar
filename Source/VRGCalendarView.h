@@ -9,34 +9,34 @@
 #import <UIKit/UIKit.h>
 #import "UIColor+expanded.h"
 
-#define kVRGCalendarViewTopBarHeight    70
-#define kVRGCalendarViewTitleHeight     50
+#define kVRGCalendarViewTopBarHeight    60
+#define kVRGCalendarViewTitleHeight     40
 #define kVRGCalendarViewWidth          320
 
 #define kVRGCalendarViewDayWidth        44
 #define kVRGCalendarViewDayHeight       44
 
-#define kVRGCalendarTextColor                   @"0x000000"
+#define kVRGCalendarTextColor                   @"0x383838"
 #define kVRGCalendarArrowColor                  @"0x000000"
 #define kVRGCalendarBackgroundColor             @"0xFFFFFF"
 #define kVRGCalendarPrevOrNextTextColor         @"0x767676"
-#define kVRGCalendarSelectedTextBackgroundColor @"0xFF8000"
+#define kVRGCalendarSelectedTextBackgroundColor @"0x006dbc"
 #define kVRGCalendarSelectedTextColor           @"0xFFFFFF"
-#define kVRGCalendarTodayBackgroundColor        @"0xEEEEEE"
-#define kVRGCalendarTodayTextColor              @"0x383838"
+#define kVRGCalendarTodayBackgroundColor        @"0x383838"
+#define kVRGCalendarTodayTextColor              @"0xFFFFFF"
 #define kVRGCalendarDisableTextColor            @"0xDCDCDC"
-#define kVRGCalendarGridBackgroundColor         @"0xFFFFFF"
-#define kVRGCalendarGridDarkLinesColor          @"0xFFFFFF"
-#define kVRGCalendarDayLabelColor               @"0x919191"
-#define kVRGCalendarTitleLabelColor             @"0x5E5E5E"
+#define kVRGCalendarGridBackgroundColor         @"0xf3f3f3"
+#define kVRGCalendarGridDarkLinesColor          @"0xcfd4d8"
+#define kVRGCalendarDayLabelColor               @"0x383838"
+#define kVRGCalendarTitleLabelColor             @"0x383838"
 
-#define kKNCalendarTitleFont          [UIFont fontWithName:@"HelveticaNeue" size:22]
-#define kKNCalendarNumberFont         [UIFont fontWithName:@"HelveticaNeue" size:22]
-#define kKNCalendarDayLabelFont       [UIFont fontWithName:@"HelveticaNeue-Bold" size:13]
+#define kKNCalendarTitleFont         [UIFont fontWithName:@"HelveticaNeue-Bold" size:17]
+#define kKNCalendarNumberFont        [UIFont fontWithName:@"HelveticaNeue-Bold" size:17]
+#define kKNCalendarDayLabelFont      [UIFont fontWithName:@"HelveticaNeue" size:12]
 
 #define kKNCalendarArrowHeight        18
-#define kKNCalendarArrowOffsetTop     14
-#define kKNCalendarArrowOffsetSide    18
+#define kKNCalendarArrowOffsetTop     12
+#define kKNCalendarArrowOffsetSide    12 
 
 @protocol VRGCalendarViewDelegate;
 @interface VRGCalendarView : UIView {
